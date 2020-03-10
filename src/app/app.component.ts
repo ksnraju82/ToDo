@@ -9,7 +9,7 @@ export class AppComponent {
   title = 'todo-app';
   todoArray=[];
 
-  @ViewChild('todo') nameInputRef: ElementRef;
+  @ViewChild('todo',{static: false}) nameInputRef: ElementRef;
 
   addTodo(value){    
     this.todoArray.push(value);
