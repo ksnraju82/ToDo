@@ -1,15 +1,42 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { ToDoService } from '../app/service/todo.service';
+import { clsToDolst } from './Model/ToDolist';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: []
 })
-export class AppComponent {
+
+export class AppComponent implements OnInit {
   title = 'todo-app';
   todoArray=[];
+  _todo: clsToDolst;
 
   @ViewChild('todo',{static: false}) nameInputRef: ElementRef;
+
+  constructor( ) {  
+    
+   }
+
+  ngOnInit() {
+    this.getToDoTasks();
+  }
+
+  getToDoTasks() {
+    // this.todoservice.getToDoList()
+    //   .subscribe(
+    //     todo => {
+    //       this._todo = new clsToDolst(todo);
+    //       this._todo.ToDoItems.forEach(val => {
+    //         if (val.Name){
+    //           this.todoArray.push(val);
+    //         }
+    //       });
+    //     } 
+    //   );
+  }
 
   addTodo(value){    
     this.todoArray.push(value);

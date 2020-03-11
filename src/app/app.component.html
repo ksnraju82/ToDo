@@ -11,7 +11,7 @@
             <p>{{todo.value}}</p>
             <div class="data">  
               <ul class="list-instyled">   
-                <li  *ngFor="let todo of todoArray">{{todo}}<i (click)="deleteItem($event)" class="material-icons">delete</i></li> 
+                <li  *ngFor="let task of todoArray">{{task}}<i (click)="deleteItem($event)" class="material-icons">delete</i></li> 
               </ul>  
             </div>
         </div> 

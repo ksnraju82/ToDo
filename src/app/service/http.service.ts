@@ -1,16 +1,16 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions} from '@angular/http';
-import {  Observable  } from 'rxjs';
-import { map, catchError } from "rxjs/operators";
+import { ServiceHandler } from '../service/service.helper'
+import { Observable } from 'rxjs/observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class HTTPService {
-    constructor(private _http: Http) { }
+    constructor(private _http: Http, private servicehandler: ServiceHandler) { }
 
-    get(url: string, Params: URLSearchParams): Observable < any > {
+    get(url: string, Params?: URLSearchParams): Observable < any > {
         let headers = new Headers();
         headers.set('Content-Type', 'application/json');
         headers.set('Accept', 'application/json');
@@ -24,7 +24,8 @@ export class HTTPService {
             URLSearchParams.arguments.search = Params;
         }                    
     return this._http.get(url, options)
-            .pipe(map((response: any) => response.json()), catchError(this.handleError));
+    .map(this.servicehandler.parseData)
+    .catch(this.servicehandler.handleError);
     }
 
 post(url: string, model: any): Observable<any> {
@@ -38,7 +39,8 @@ post(url: string, model: any): Observable<any> {
     headers.set('Authorization', 'Bearer' + this.JWT());
     let options = new RequestOptions({ headers: headers });
     return this._http.post(url, body, options)
-            .pipe(map((response: any) => response.json()), catchError(this.handleError));
+    .map(this.servicehandler.parseData)
+    .catch(this.servicehandler.handleError);
 }
 
 put(url: string, id: number, model: any): Observable<any> {
@@ -52,7 +54,8 @@ put(url: string, id: number, model: any): Observable<any> {
     headers.set('Authorization', 'Bearer' + this.JWT());
     let options = new RequestOptions({ headers: headers });
     return this._http.put(url+id, body, options)
-            .pipe(map((response: any) => response.json()), catchError(this.handleError));
+    .map(this.servicehandler.parseData)
+    .catch(this.servicehandler.handleError);
 }
 
 delete(url: string, id: number): Observable<any> {
@@ -65,7 +68,8 @@ delete(url: string, id: number): Observable<any> {
     headers.set('Authorization', 'Bearer' + this.JWT());
     let options = new RequestOptions({ headers: headers });
     return this._http.delete(url+id,options)
-            .pipe(map((response: any) => response.json()), catchError(this.handleError));
+    .map(this.servicehandler.parseData)
+    .catch(this.servicehandler.handleError);
 }
 
 private handleError(error: Response) {
