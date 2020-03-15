@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
+import {  RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/observable';
 
 import { ServiceHandler } from '../service/service.helper'
@@ -16,7 +16,7 @@ export class ToDoService {
 
   schedulerUrl: string = "https://localhost:44380/api/Scheduler";
 
-  constructor(private http: Http, private servicehandler: ServiceHandler) {}
+  constructor(private http: HttpClient, private servicehandler: ServiceHandler) {}
 
   getToDoList() : Observable<clsToDolst> {   
      
@@ -28,7 +28,7 @@ export class ToDoService {
       let messDetail = JSON.stringify(objMsgDetails);
       options.headers = this.servicehandler.Assign(messDetail);
 
-    return this.http.get(this.schedulerUrl, options)
+    return this.http.get(this.schedulerUrl)
           .map(this.servicehandler.parseData)
         .catch(this.servicehandler.handleError);
 

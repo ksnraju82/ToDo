@@ -6,50 +6,19 @@ import { clsToDolst } from './Model/ToDolist';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: []
+  providers: [ToDoService]
 })
 
 export class AppComponent implements OnInit {
-  title = 'todo-app';
-  todoArray=[];
-  _todo: clsToDolst;
 
-  @ViewChild('todo',{static: false}) nameInputRef: ElementRef;
-
-  constructor( ) {  
+  constructor( private todoservice: ToDoService) {  
     
    }
 
   ngOnInit() {
-    this.getToDoTasks();
+    
   }
 
-  getToDoTasks() {
-    // this.todoservice.getToDoList()
-    //   .subscribe(
-    //     todo => {
-    //       this._todo = new clsToDolst(todo);
-    //       this._todo.ToDoItems.forEach(val => {
-    //         if (val.Name){
-    //           this.todoArray.push(val);
-    //         }
-    //       });
-    //     } 
-    //   );
-  }
-
-  addTodo(value){    
-    this.todoArray.push(value);
-  }
-  deleteItem($event){   
-    for(let i=0 ;i<= this.todoArray.length ;i++)
-    {
-      if(this.nameInputRef.nativeElement.value== this.todoArray[i])
-        {
-          this.todoArray.splice(i,1) 
-        }  
-    } 
-  }
-  todoSubmit(value?:any){ console.log(value)  }
+ 
 }
 
