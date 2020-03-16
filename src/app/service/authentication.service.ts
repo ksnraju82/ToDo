@@ -1,33 +1,34 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Http, Response, Headers, RequestOptions} from '@angular/http';
-import { HttpClient } from '@angular/common/http';
-import {  Observable  } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from "rxjs/operators";
+import { Router } from '@angular/router';
 
 
 @Injectable()
-export class AuthenticationService {
-    //constructor(private _http: HTTPService) { }
+export class AuthenticationService {    
+    
     constructor(
+        private router: Router,
         private http: HttpClient       
     ) {}
 
     login(username: string, password: string) {
         
-        
-        return this.http.post('https://localhost:44380/api/Token', JSON.stringify({ username: username, password: password }))
-            .pipe(map((response: any) =>  {
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user && user.token) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    sessionStorage.setItem('currentUser', JSON.stringify(user));                    
-                }
-            }));
+        const headers = new HttpHeaders({'Content-Type':'application/json; charset=utf-8'});        
+        return this.http.post<string>('https://localhost:44380/api/Token', JSON.stringify({ Email: username, Password: password }), {headers: headers})
+        .subscribe(data => {
+            //return String(data);
+            // login successful if there's a jwt token in the response
+            let JWT = JSON.stringify(data);
+            if (JWT) {
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                sessionStorage.setItem('JWT', JSON.stringify(JWT));
+            }
+        }) 
     }
 
     logout() {
         // remove user from local storage to log user out
-        sessionStorage.removeItem('currentUser');
+        sessionStorage.removeItem('JWT');
     }
 }

@@ -1,6 +1,5 @@
-import { Component, OnInit, TemplateRef, Injectable, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -15,11 +14,12 @@ import {AuthenticationService} from '../service/authentication.service'
   })
 
   export class LoginComponent implements OnInit {
-
+    
     loginForm: FormGroup;
     submitted = false;
 
     constructor(
+      private router: Router,
         private formBuilder: FormBuilder,
         private loginService: AuthenticationService) {}
 
@@ -41,17 +41,11 @@ import {AuthenticationService} from '../service/authentication.service'
             return;
         }
 
-        this.loginService.login(this.f.username.value, this.f.password.value)
-      .subscribe(
-        data => {
-          
-        },
-        error => {
-            if (error) {
-              
-              }  
-        });      
-    }
+        var result = this.loginService.login(this.f.username.value, this.f.password.value)
 
-    
+        if (result) {
+          this.router.navigate(['/ToDo']);
+        }
+          
+    }
   }

@@ -9,7 +9,7 @@ import { clsToDolst } from '../Model/ToDolist';
   providers: [ToDoService]
 })
 
-export class AppComponent implements OnInit {
+export class ToDoComponent implements OnInit {
   title = 'todo-app';
   todoArray=[];
   _todo: clsToDolst;
